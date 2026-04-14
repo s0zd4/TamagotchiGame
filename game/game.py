@@ -10,14 +10,14 @@ class Game:
         # Configurações da tela
         self.WIDTH = 800
         self.HEIGHT = 600
-        self.FPS = 60
+        self.FPS = 40
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Tamagotchi")
         self.clock = pygame.time.Clock()
         self.running = True
         
         # Criar o pet
-        self.pet = Pet("Tamagotchi")
+        self.pet = Pet("experimento 01")
         
         # HUD para renderizar a interface
         self.hud = HUD(self.WIDTH, self.HEIGHT)
