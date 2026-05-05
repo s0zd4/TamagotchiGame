@@ -25,6 +25,9 @@ class Pet:
         
     def feed(self):
         """Alimenta o pet, reduz fome e restaura um pouco de energia"""
+        if self.is_sleeping:
+            return  # Não permite alimentar enquanto dormindo
+            
         if self.hungry > 0:
             self.hungry = max(0, self.hungry - 30)
             self.energy = min(100, self.energy + 10)  # Pequena recuperação de energia ao comer
@@ -32,9 +35,14 @@ class Pet:
             self.health = min(100, self.health + 10)
         else:
             self.health = max(0, self.health - 10)
+        
+        self.atualizar_estado()
 
     def play(self):
         """Pet brinca, fica feliz, mas gasta energia e fica com fome"""
+        if self.is_sleeping:
+            return  # Não permite brincar enquanto dormindo
+            
         if self.energy >= 20:
             self.hungry = min(100, self.hungry + 20)  # Aumenta mais fome ao brincar
             self.energy = max(0, self.energy - 20)  # Gasta energia ao brincar
@@ -43,25 +51,40 @@ class Pet:
             self._check_level_up()
         else:
             self.happiness = max(0, self.happiness - 10)
+        
+        self.atualizar_estado()
 
-    def sleep(self):
-        """Pet dorme e recupera muita energia"""
-        if not self.is_sleeping:
-            self.is_sleeping = True
-            self.energy = min(100, self.energy + 40)  # Grande recuperação de energia
-            self.happiness = max(0, self.happiness - 5)  # Perde um pouco de felicidade
-            # O pet ficará dormindo por alguns segundos (lógica será implementada no game)
+    def toggle_sleep(self):
+        """Alterna o estado de sono do pet."""
+        self.is_sleeping = not self.is_sleeping
+        if self.is_sleeping:
+            self.energy = min(100, self.energy + 20)  # Pequena recuperação ao dormir
+        else:
+            self.happiness = max(0, self.happiness - 5)  # Perde felicidade ao acordar
+        
+        self.atualizar_estado()
 
     def heal(self):
         """Cura o pet recuperando saúde."""
+        if self.is_sleeping:
+            return  # Não permite curar enquanto dormindo
+            
         if self.health < 100:
             self.health = min(100, self.health + 25)
             self.happiness = min(100, self.happiness + 5)
             self.energy = min(100, self.energy + 5)
+        
+        self.atualizar_estado()
 
     def update_needs(self):
         """Atualiza as necessidades do pet (fome, energia, felicidade, saúde)"""
-        if not self.is_sleeping:
+        if self.is_sleeping:
+            # Quando dormindo, regenera energia constantemente
+            self.energy = min(100, self.energy + 5)
+            # Pequena recuperação de saúde durante o sono
+            self.health = min(100, self.health + 1)
+        else:
+            # Quando acordado, necessidades normais
             self.hungry = min(100, self.hungry + 3)
             self.energy = max(0, self.energy - 2)
             self.happiness = max(0, self.happiness - 2)
@@ -73,10 +96,21 @@ class Pet:
         """Aumenta a idade do pet"""
         self.age += 1
 
-    def pass_time(self):
-        """Passa o tempo e reduz atributos naturalmente (método legado)"""
-        self.update_needs()
-        self.age_up()
+    def update(self, needs_counter, age_counter):
+        """Atualiza o pet baseado nos contadores de tempo."""
+        updated = False
+        
+        if needs_counter >= 5:  # Atualiza necessidades a cada 5 segundos
+            self.update_needs()
+            updated = True
+        
+        if age_counter >= 10:  # Envelhece a cada 10 segundos
+            self.age_up()
+            updated = True
+        
+        # Salva no banco se houve atualização
+        if updated:
+            self.atualizar_estado()
 
     def _check_health(self):
         """Verifica a saúde do pet baseado no estado"""

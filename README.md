@@ -2,105 +2,102 @@
 
 Um jogo de tamagotchi clássico desenvolvido em Python usando a biblioteca Pygame.
 
+## � Como Jogar (Executável)
+
+### Opção 1: Executável Direto (Recomendado)
+1. **Clique duas vezes** no arquivo `Executar_Tamagotchi.bat`
+2. O jogo abrirá automaticamente!
+
+### Opção 2: Executável Manual
+1. Vá para a pasta `dist/`
+2. Clique duas vezes no arquivo `Tamagotchi.exe`
+
+### Opção 3: Código Fonte (Desenvolvedores)
+```bash
+pip install -r requirements.txt
+python main.py
+```
+
+## 🎮 Controles
+
+- **F**: Alimentar o pet
+- **P**: Brincar com o pet  
+- **S**: Colocar o pet para dormir
+- **H**: Curar o pet
+- **ESC**: Sair do jogo
+
+## 📊 Mecânica do Jogo
+
+### Atributos do Pet
+- **Fome**: Aumenta com o tempo, diminui ao alimentar
+- **Energia**: Diminui ao brincar, regenera ao dormir
+- **Felicidade**: Aumenta ao brincar, diminui naturalmente
+- **Saúde**: Afetada por todos os atributos; o pet morre se chegar a 0
+- **Nível**: Aumenta ganhando XP ao brincar
+- **Idade**: Aumenta progressivamente
+
+### Sistema de Sono
+- Quando dormindo, a energia regenera constantemente
+- Outros atributos não pioram durante o sono
+- Ações ficam bloqueadas enquanto o pet dorme
+- Botões ficam desabilitados visualmente
+
+### Salvamento Automático
+- Todos os dados são salvos automaticamente no banco SQLite
+- O jogo carrega automaticamente o pet salvo na próxima execução
+- Se for a primeira vez, você nomeia seu pet
+
 ## 📁 Estrutura do Projeto
 
 ```
 tamagotchiProject/
 │
-├── main.py              # Ponto de entrada do jogo
+├── main.py                    # Ponto de entrada do jogo
+├── requirements.txt           # Dependências Python
+├── Executar_Tamagotchi.bat    # Script para executar o jogo
+├── dist/
+│   └── Tamagotchi.exe         # Executável standalone
 ├── game/
 │   ├── __init__.py
-│   └── game.py          # Controle principal do jogo, loop e eventos
+│   └── game.py                # Controle principal do jogo
 ├── pet/
 │   ├── __init__.py
-│   └── pet.py           # Lógica do pet (atributos, ações, comportamentos)
+│   └── pet.py                 # Lógica do pet
 ├── ui/
 │   ├── __init__.py
-│   └── hud.py           # Interface visual (HUD) e renderização
+│   ├── hud.py                 # Interface visual
+│   └── naming_screen.py       # Tela de nomeação
+├── db/
+│   ├── database.py            # Operações do banco
+│   └── pet_info.db            # Banco de dados SQLite
 └── assets/
     ├── fonts/
     ├── images/
     └── sounds/
 ```
 
-## 📋 Descrição dos Arquivos
+## 🔧 Desenvolvimento
 
-### `main.py`
-Arquivo principal que inicia o jogo. Importa a classe `Game` e executa o loop principal.
+### Dependências
+- Python 3.8+
+- Pygame 2.6+
 
-### `game/game.py`
-Gerencia todo o controle do jogo:
-- **Inicialização**: pygame, tela, FPS, configurações
-- **Loop Principal**: atualiza lógica, renderiza e trata eventos
-- **Eventos**: captura input do usuário (teclado, mouse)
-- **Game Over**: verifica se o pet morreu e exibe tela de fim de jogo
+### Instalação para Desenvolvimento
+```bash
+pip install -r requirements.txt
+```
 
-### `pet/pet.py`
-Define a lógica completa do pet (animal de estimação):
-- **Atributos**: fome, energia, felicidade, saúde, nível, XP, idade
-- **Ações**: alimentar, brincar, dormir
-- **Dinâmica**: o tempo passa e afeta os atributos
-- **Progressão**: sistema de níveis baseado em XP
-- **Morte**: o pet morre se a saúde chegar a 0
+### Criar Novo Executável
+```bash
+pip install pyinstaller
+pyinstaller --onefile --windowed --name Tamagotchi main.py
+```
 
-### `ui/hud.py`
-Responsável pela renderização da interface visual:
-- **Titel e Status**: nome e nível do pet
-- **Barras de Status**: fome, energia, felicidade e saúde
-- **Informações**: XP e idade do pet
-- **Controles**: exibe as teclas disponíveis na tela
+## 📝 Notas Técnicas
 
-## 🎮 Como Jogar
+- **Executável Standalone**: Criado com PyInstaller, não requer instalação de Python
+- **Banco de Dados**: SQLite integrado, dados salvos automaticamente
+- **Interface**: Pygame com animações suaves e design moderno
+- **Arquitetura**: Código modular e bem organizado
 
-1. **Instale o pygame**:
-   ```bash
-   pip install pygame
-   ```
-
-2. **Execute o jogo**:
-   ```bash
-   python main.py
-   ```
-
-3. **Controles**:
-   - **F**: Alimentar o pet
-   - **P**: Brincar com o pet
-   - **S**: Colocar o pet para dormir
-   - **ESC**: Sair do jogo
-
-## 📊 Mecânica do Jogo
-
-### Atributos do Pet
-- **Fome**: Aumenta com o tempo, diminui ao alimentar
-- **Energia**: Diminui ao brincar, recupera ao dormir
-- **Felicidade**: Aumenta ao brincar, diminui naturalmente
-- **Saúde**: Afetada por todos os atributos; o pet morre se chegar a 0
-- **Nível**: Aumenta ganhando XP ao brincar
-- **Idade**: Aumenta progressivamente
-
-### Dinâmica
-O tempo passa automaticamente a cada 1 segundo (60 frames), afetando os atributos do pet.
-
-Para manter o pet vivo:
-- Alimente-o quando estiver com fome
-- Deixe-o brincar para ganhar felicidade e XP
-- Deixe-o dormir para recuperar energia
-
-## 🔧 Possíveis Melhorias Futuras
-
-- [ ] Adicionar sprites e animações do pet
-- [ ] Adicionar efeitos sonoros
-- [ ] Implementar salvamento/carregamento de jogo
-- [ ] Adicionar diferentes tipos de pets
-- [ ] Sistema de comidas diferentes
-- [ ] Minigames para brincar
-- [ ] Tela de menu principal
-- [ ] Sistema de pontuação/ranking
-
-## 📝 Notas
-
-- O projeto está organizado de forma modular, facilitando futuras expansões
-- Cada módulo tem uma responsabilidade específica
-- O código está comentado para facilitar manutenção
-
-Divirta-se! 🎮
+Divirta-se com seu Tamagotchi! 🎮

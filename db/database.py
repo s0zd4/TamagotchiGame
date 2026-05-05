@@ -90,7 +90,7 @@ def atualizar_pet(nome, hungry, happiness, energy, health, experience, level, ag
         cursor.execute('''
             UPDATE pet_status SET 
             hungry = ?, happiness = ?, energy = ?, health = ?, 
-            experience = ?, level = ?, age = ?
+            experience = ?, level = ?, age = ?, last_updated = CURRENT_TIMESTAMP
             WHERE name = ?
         ''', (hungry, happiness, energy, health, experience, level, age, nome))
         
