@@ -1,16 +1,27 @@
-import time
+import sys
+import os
+
+# Adicionar o diretório raiz ao path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from db.database import atualizar_pet
 
 class Pet:
-    def __init__(self, name):
+    def __init__(self, name, hungry=100, happiness=100, energy=100, health=100, experience=0, level=1, age=0):
         self.name = name
-        self.hungry = 50
-        self.energy = 50
-        self.happiness = 50
-        self.level = 1
-        self.experience = 0
-        self.is_sleeping = False
-        self.health = 100
-        self.age = 0
+        self.hungry = hungry
+        self.happiness = happiness
+        self.energy = energy
+        self.health = health
+        self.experience = experience
+        self.level = level
+        self.age = age
+        self.is_sleeping = False  # Estado de sono do pet
+
+    def atualizar_estado(self):
+        """Atualiza os dados do pet atual no banco de dados."""
+        atualizar_pet(self.name, self.hungry, self.happiness, self.energy, 
+                     self.health, self.experience, self.level, self.age)
         
     def feed(self):
         """Alimenta o pet, reduz fome e restaura um pouco de energia"""
@@ -35,21 +46,37 @@ class Pet:
 
     def sleep(self):
         """Pet dorme e recupera muita energia"""
-        self.is_sleeping = True
-        self.energy = min(100, self.energy + 40)  # Grande recuperação de energia
-        self.happiness = max(0, self.happiness - 5)  # Perde um pouco de felicidade
-        self.is_sleeping = False
+        if not self.is_sleeping:
+            self.is_sleeping = True
+            self.energy = min(100, self.energy + 40)  # Grande recuperação de energia
+            self.happiness = max(0, self.happiness - 5)  # Perde um pouco de felicidade
+            # O pet ficará dormindo por alguns segundos (lógica será implementada no game)
 
-    def pass_time(self):
-        """Passa o tempo e reduz atributos naturalmente"""
+    def heal(self):
+        """Cura o pet recuperando saúde."""
+        if self.health < 100:
+            self.health = min(100, self.health + 25)
+            self.happiness = min(100, self.happiness + 5)
+            self.energy = min(100, self.energy + 5)
+
+    def update_needs(self):
+        """Atualiza as necessidades do pet (fome, energia, felicidade, saúde)"""
         if not self.is_sleeping:
             self.hungry = min(100, self.hungry + 3)
             self.energy = max(0, self.energy - 2)
             self.happiness = max(0, self.happiness - 2)
             self.health = max(0, self.health - 1)
         
-        self.age += 1
         self._check_health()
+
+    def age_up(self):
+        """Aumenta a idade do pet"""
+        self.age += 1
+
+    def pass_time(self):
+        """Passa o tempo e reduz atributos naturalmente (método legado)"""
+        self.update_needs()
+        self.age_up()
 
     def _check_health(self):
         """Verifica a saúde do pet baseado no estado"""
