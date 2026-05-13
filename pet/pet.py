@@ -144,4 +144,4 @@ class Pet:
 
     def is_alive(self):
         """Verifica se o pet ainda está vivo"""
-        return self.health > 0
+        return self.health > 0 #Medo disso ficar -1 x_x

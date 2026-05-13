@@ -2,7 +2,7 @@
 
 Um jogo de tamagotchi clássico desenvolvido em Python usando a biblioteca Pygame.
 
-## � Como Jogar (Executável)
+## Como Jogar (Executável)
 
 ### Opção 1: Executável Direto (Recomendado)
 1. **Clique duas vezes** no arquivo `Executar_Tamagotchi.bat`
@@ -79,7 +79,7 @@ tamagotchiProject/
 ## 🔧 Desenvolvimento
 
 ### Dependências
-- Python 3.8+
+- Python 3.13+
 - Pygame 2.6+
 
 ### Instalação para Desenvolvimento
