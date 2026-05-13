@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from db.database import atualizar_pet
 
 class Pet:
-    def __init__(self, name, hungry=100, happiness=100, energy=100, health=100, experience=0, level=1, age=0):
+    def __init__(self, name, hungry=0, happiness=100, energy=100, health=100, experience=0, level=1, age=0):
         self.name = name
         self.hungry = hungry
         self.happiness = happiness
@@ -30,7 +30,7 @@ class Pet:
             
         if self.hungry > 0:
             self.hungry = max(0, self.hungry - 30)
-            self.energy = min(100, self.energy + 10)  # Pequena recuperação de energia ao comer
+            self.energy = min(100, self.energy + 2)  # Pequena recuperação de energia ao comer
             self.happiness = min(100, self.happiness + 5)
             self.health = min(100, self.health + 10)
         else:

@@ -70,7 +70,7 @@ def criar_novo_pet(nome):
         cursor.execute('''
             INSERT INTO pet_status (name, hungry, happiness, energy, health, experience, level, age)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (nome, 100, 100, 100, 100, 0, 1, 0))
+        ''', (nome, 0, 100, 100, 100, 0, 1, 0))
         
         conn.commit()
         print(f"Pet '{nome}' criado com sucesso!")
